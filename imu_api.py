@@ -17,9 +17,9 @@ import i2c
 
 #############
 # Config Data
-DELAY = 0.200
-I2C_BUS_NUM = 1
-HEADER_SIZE = 5
+DELAY = 0.200 #Prob need to change it as well
+I2C_BUS_NUM = 2
+HEADER_SIZE = 5 #Prob need to change it as well
 TELEMETRY = {
     # "supervisor": {
     #     "firmware_version": {"command": "SUP:TEL? 0,data",  "length": 48, "parsing": "str"},
@@ -314,6 +314,7 @@ class IMU:
         # Create empty dictionary
         output_dict = {}
         for telem_field in dict:
+
             input_dict = dict[telem_field]
             # Write command for the imu to prepare the data
             self.write(input_dict['command'])
@@ -334,9 +335,6 @@ class IMU:
                     input_dict=input_dict,
                     read_data=read_data,
                     parsed_data=parsed_data))
-
-            print(output_dict)
-
         return output_dict
 
     def _header_parse(self, data):
