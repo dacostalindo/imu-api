@@ -49,13 +49,13 @@ class TestIMUAPI(unittest.TestCase):
     #             data=fake_command + b'\x0a',
     #             device=self.imu.address)
 
-    # def test_read(self):
-    #     read_count = 20
-    #     with mock.patch('i2c.I2C.read') as mock_i2cread:
-    #         self.imu.read(count=read_count)
-    #         mock_i2cread.assert_called_with(
-    #             device=self.imu.address,
-    #             count=read_count)
+    def test_read(self):
+        read_count = 20
+        with mock.patch('i2c.I2C.read') as mock_i2cread:
+            self.imu.read(count=read_count)
+            mock_i2cread.assert_called_with(
+                device=self.imu.address,
+                count=read_count)
 
     # def test_build_telemetry_dict_modulechecking(self):
     #     bad_module = "notamodule"
