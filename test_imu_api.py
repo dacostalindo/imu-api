@@ -72,11 +72,11 @@ class TestIMUAPI(unittest.TestCase):
     #             module="module_1",
     #             fields=bad_fields)
     #
-    # def test_build_telemetry_dict_all(self):
-    #     requests_assert = imu_api.TELEMETRY['data']
-    #     self.assertEqual(self.imu._build_telemetry_dict(
-    #         module="data"),
-    #         requests_assert)
+    def test_build_telemetry_dict_all(self):
+        requests_assert = imu_api.TELEMETRY['data']
+        self.assertEqual(self.imu._build_telemetry_dict(
+            module="data"),
+            requests_assert)
 
     # def test_build_telemetry_dict_field(self):
     #     requests_assert = {}
@@ -88,12 +88,12 @@ class TestIMUAPI(unittest.TestCase):
     #             fields=["acceleration"]),
     #         requests_assert)
     # #
-    # def test_header_parse_datareadyflag(self):
-    #     notready_data = '\x00\x00\x00\x00\x00\x00'
-    #     self.assertEqual(
-    #         self.imu._header_parse(
-    #             data=notready_data)['timestamp'],
-    # #         0)
+    def test_header_parse_datareadyflag(self):
+        notready_data = '\x00\x00\x00\x00\x00\x00'
+        self.assertEqual(
+            self.imu._header_parse(
+                data=notready_data)['timestamp'],
+            0)
     #
     # def test_header_parse(self):
     #     data_ready = b'\x01'
