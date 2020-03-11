@@ -57,7 +57,7 @@ int main() {
 
 	//Buffer to store data from I2C bus
 	int k = 0;
-	while(k<2){
+	while(k<1){
 		string drdy = imu.DRDYread();
 		string one = "1"; //I hate cstrings
 		if(drdy == one){
@@ -114,7 +114,7 @@ int main() {
 				// cout<<"Temperature: "<<temperature<<" degrees C\n";
 				//write to file
 				dataLog << toSend.hour<<","<< toSend.min<<","<< toSend.sec<<","<<toSend.nano<<","<< motionData[0]<<","<< motionData[1]<<","<< motionData[2]<<","<< motionData[3]<<","<< motionData[4]<<","<< motionData[5]<<","<<temperature<<"\n";
-				cout << "Hello World of Data" ; 
+				cout << "Hello World of Data" ;
 				send(sock , &toSend , sizeof(struct message) , 0 );
 				delete motionData;
 				delete measurements;
