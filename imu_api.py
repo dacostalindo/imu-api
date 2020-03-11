@@ -83,8 +83,10 @@ class IMU:
     #     else:
     #         raise TypeError('Commands must be str or bytes.')
 
-    # def read(self, count):
-    #     return self.i2cfile.read(device=self.address, count=count)
+    def read(self):
+
+        subprocess.call(["./imu","XsensIMU.cpp","XsensIMU.h","imutest.cpp","to","imu"])
+        # return self.i2cfile.read(device=self.address, count=count)
 
     def read_telemetry(self, module, fields=["all"]):
         """
@@ -167,34 +169,31 @@ class IMU:
         sock.bind((self.udp_ip, self.udp_port))
 
         output_dict = {}
-        subprocess.call(["./imu","XsensIMU.cpp","XsensIMU.h","imutest.cpp","to","imu"])
+        self.read()
+        
+        data, addr = sock.recvfrom(1024)
+        # parsed_data = self._unpack(
+        #     parsing=input_dict['parsing'],
+        #     data=read_data['data'])
+        ax = struct.unpack('f', data[0:4])
+        ay = struct.unpack('f', data[4:8])
+        az = struct.unpack('f', data[8:12])
+        rx = struct.unpack('f', data[12:16])
+        ry = struct.unpack('f', data[16:20])
+        rz = struct.unpack('f', data[20:24])
+        #temperature
+        temp = struct.unpack('f', data[24:28])
+        #Convert to short (2 bytes)
+        # hr min sec
+        time_h = struct.unpack('H', data[28:30])
+        time_m = struct.unpack('H', data[30:32])
+        time_s = struct.unpack('H', data[32:34])
+        timestamp = time_h + time_m + time_s
 
-        while True:
-
-            data, addr = sock.recvfrom(1024)
-
-            # parsed_data = self._unpack(
-            #     parsing=input_dict['parsing'],
-            #     data=read_data['data'])
-            ax = struct.unpack('f', data[0:4])
-            ay = struct.unpack('f', data[4:8])
-            az = struct.unpack('f', data[8:12])
-            rx = struct.unpack('f', data[12:16])
-            ry = struct.unpack('f', data[16:20])
-            rz = struct.unpack('f', data[20:24])
-            #temperature
-            temp = struct.unpack('f', data[24:28])
-            #Convert to short (2 bytes)
-            # hr min sec
-            time_h = struct.unpack('H', data[28:30])
-            time_m = struct.unpack('H', data[30:32])
-            time_s = struct.unpack('H', data[32:34])
-            timestamp = time_h + time_m + time_s
-
-            data_array = [ax[0], ay[0], az[0], rx[0], ry[0], rz[0], temp[0]]
-            data_strings  = ["a_x", "a_y", "a_z", "r_x", "r_y", "r_z", "temp"]
-            print(data_array)
-                # 
+        data_array = [ax[0], ay[0], az[0], rx[0], ry[0], rz[0], temp[0]]
+        data_strings  = ["a_x", "a_y", "a_z", "r_x", "r_y", "r_z", "temp"]
+        print(data_array)
+                #
                 # if len(parsed_data) > 1:
                 #
                 #     for index in len(data_array):
