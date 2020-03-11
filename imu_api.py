@@ -15,6 +15,7 @@ import socket
 import struct
 import time
 import i2c
+import subprocess
 
 #############
 # Config Data
@@ -166,9 +167,9 @@ class IMU:
         sock.bind((self.udp_ip, self.udp_port))
 
         output_dict = {}
-        data = False
+        subprocess.call(["./imu","g++","XsensIMU.cpp","XsensIMU.h","imutest.cpp","to","imu"])
 
-        while !data:
+        while True:
 
             data, addr = sock.recvfrom(1024)
 
