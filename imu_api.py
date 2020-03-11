@@ -210,7 +210,7 @@ class IMU:
                 "Number of data names doesn't match total data: " +
                 len(data_array))
 
-        # print(output_dict)
+        print(output_dict)
 
 
             # output_dict.update(
@@ -220,7 +220,6 @@ class IMU:
             #         read_data=read_data,
             #         parsed_data=parsed_data))
 
-            print(output_dict)
 
         return output_dict
 
