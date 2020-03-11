@@ -166,8 +166,9 @@ class IMU:
         sock.bind((self.udp_ip, self.udp_port))
 
         output_dict = {}
+        data = False
 
-        while True:
+        while !data:
 
             data, addr = sock.recvfrom(1024)
 
@@ -193,13 +194,13 @@ class IMU:
             data_strings  = ["a_x", "a_y", "a_z", "r_x", "r_y", "r_z", "temp"]
             print(data_array)
 
-                # if len(parsed_data) > 1:
-                #
-                #     for index in len(data_array):
-                #           output_dict.update(
-                #               {data_strings[index]: {
-                #                   'timestamp': timestamp,
-                #                   'data': data_array[index]}})
+                if len(parsed_data) > 1:
+
+                    for index in len(data_array):
+                          output_dict.update(
+                              {data_strings[index]: {
+                                  'timestamp': timestamp,
+                                  'data': data_array[index]}})
 
             # output_dict.update(
             #     self._format_data(
