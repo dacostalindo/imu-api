@@ -17,6 +17,9 @@ import mock
 ############################
 # Testing configuration data
 
+UDP_IP =
+UDP_PORT = 5007
+
 imu_api.DELAY = 0
 imu_api.HEADER_SIZE = 5
 # imu_api.TELEMETRY = {
@@ -33,8 +36,7 @@ imu_api.HEADER_SIZE = 5
 class TestIMUAPI(unittest.TestCase):
 
     def setUp(self):
-        self.imu = imu_api.IMU(address=0x6b)
-        print(self.imu)
+        self.imu = imu_api.IMU(ip="127.0.0.1",port=5007)
 
     # def test_command_type(self):
     #     with self.assertRaises(TypeError):
@@ -48,14 +50,14 @@ class TestIMUAPI(unittest.TestCase):
     #         mock_i2cwrite.assert_called_with(
     #             data=fake_command + b'\x0a',
     #             device=self.imu.address)
-
-    def test_read(self):
-        read_count = 20
-        with mock.patch('i2c.I2C.read') as mock_i2cread:
-            self.imu.read(count=read_count)
-            mock_i2cread.assert_called_with(
-                device=self.imu.address,
-                count=read_count)
+    #
+    # def test_read(self):
+    #     read_count = 20
+    #     with mock.patch('i2c.I2C.read') as mock_i2cread:
+    #         self.imu.read(count=read_count)
+    #         mock_i2cread.assert_called_with(
+    #             device=self.imu.address,
+    #             count=read_count)
 
     # def test_build_telemetry_dict_modulechecking(self):
     #     bad_module = "notamodule"
@@ -72,11 +74,11 @@ class TestIMUAPI(unittest.TestCase):
     #             module="module_1",
     #             fields=bad_fields)
     #
-    def test_build_telemetry_dict_all(self):
-        requests_assert = imu_api.TELEMETRY['data']
-        self.assertEqual(self.imu._build_telemetry_dict(
-            module="data"),
-            requests_assert)
+    # def test_build_telemetry_dict_all(self):
+    #     requests_assert = imu_api.TELEMETRY['data']
+    #     self.assertEqual(self.imu._build_telemetry_dict(
+    #         module="data"),
+    #         requests_assert)
 
     # def test_build_telemetry_dict_field(self):
     #     requests_assert = {}
@@ -88,12 +90,12 @@ class TestIMUAPI(unittest.TestCase):
     #             fields=["acceleration"]),
     #         requests_assert)
     # #
-    def test_header_parse_datareadyflag(self):
-        notready_data = '\x00\x00\x00\x00\x00\x00'
-        self.assertEqual(
-            self.imu._header_parse(
-                data=notready_data)['timestamp'],
-            0)
+    # def test_header_parse_datareadyflag(self):
+    #     notready_data = '\x00\x00\x00\x00\x00\x00'
+    #     self.assertEqual(
+    #         self.imu._header_parse(
+    #             data=notready_data)['timestamp'],
+    # #         0)
     #
     # def test_header_parse(self):
     #     data_ready = b'\x01'
@@ -217,18 +219,24 @@ class TestIMUAPI(unittest.TestCase):
     #             read_data=fake_read_data,
     #             parsed_data=bad_parsed_data)
     #
-    # def test_read_telemetry(self):
-    #     module = 'module_1'
-    #     field = 'field_1'
-    #     fields = [field]
-    #     input_assert = {}
-    #     input_assert[field] = imu_api.TELEMETRY[module][field]
-    #     with mock.patch('imu_api.IMU._read_telemetry_items') as mock_read_telemetry_items:
-    #         self.imu.read_telemetry(
-    #             module=module,
-    #             fields=fields)
-    #         mock_read_telemetry_items.assert_called_with(
-    #             dict=input_assert)
+
+    def test_read_telemetry(self):
+        module = 'general_data'
+        field = 'all'
+        # print(self.imu.read_telemetry_items(module=module,fields=fields))
+        self.imu.read_telemetry_items(dict=module)
+
+
+        # fields = [field]
+        # input_assert = {}
+        # input_assert[field] = imu_api.TELEMETRY[module][field]
+        #
+        # with mock.patch('imu_api.IMU._read_telemetry_items') as mock_read_telemetry_items:
+        #     self.imu.read_telemetry(
+        #         module=module,
+        #         fields=fields)
+        #     mock_read_telemetry_items.assert_called_with(
+        #         dict=input_assert)
     #
     # def test_read_telemetry_items(self):
     #     module = 'module_1'
@@ -249,7 +257,7 @@ class TestIMUAPI(unittest.TestCase):
     #         self.assertEqual(
     #             self.imu._read_telemetry_items(dict=input_dict),
     #             output_assert)
-
+    #
 
 if __name__ == '__main__':
     unittest.main()
