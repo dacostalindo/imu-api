@@ -7,7 +7,7 @@ https://github.com/pypa/sampleproject
 
 from setuptools import setup
 
-setup(name='imu',
+setup(name='imu_api',
       version='0.1.5',
       description='KubOS API for communicating with IMU',
       py_modules=["imu_api"],
