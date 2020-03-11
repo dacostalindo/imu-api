@@ -144,7 +144,7 @@ class IMU:
                 raise KeyError('Invalid field: '+str(field))
         return requests
 
-    def _read_telemetry_items(self, dict):
+    def _read_telemetry_items(self):
         """
         Creates the output_dict, reads the data, inputs it into parsing mehods,
         then inserts and formats it in the output_dict.
@@ -210,7 +210,7 @@ class IMU:
                 "Number of data names doesn't match total data: " +
                 len(data_array))
 
-
+        print(output_dict)
 
 
             # output_dict.update(
