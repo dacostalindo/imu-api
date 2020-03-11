@@ -86,7 +86,7 @@ class IMU:
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         #sock2 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.bind((self.udp_ip, self.udp_port))
-
+        print("ok so far")
         output_dict = {}
         self.read()
 
