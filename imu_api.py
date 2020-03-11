@@ -167,7 +167,7 @@ class IMU:
         sock.bind((self.udp_ip, self.udp_port))
 
         output_dict = {}
-        subprocess.call(["./imu","g++","XsensIMU.cpp","XsensIMU.h","imutest.cpp","to","imu"])
+        subprocess.call(["./imu","XsensIMU.cpp","XsensIMU.h","imutest.cpp","to","imu"])
 
         while True:
 
@@ -194,14 +194,14 @@ class IMU:
             data_array = [ax[0], ay[0], az[0], rx[0], ry[0], rz[0], temp[0]]
             data_strings  = ["a_x", "a_y", "a_z", "r_x", "r_y", "r_z", "temp"]
             print(data_array)
-
-                if len(parsed_data) > 1:
-
-                    for index in len(data_array):
-                          output_dict.update(
-                              {data_strings[index]: {
-                                  'timestamp': timestamp,
-                                  'data': data_array[index]}})
+                # 
+                # if len(parsed_data) > 1:
+                #
+                #     for index in len(data_array):
+                #           output_dict.update(
+                #               {data_strings[index]: {
+                #                   'timestamp': timestamp,
+                #                   'data': data_array[index]}})
 
             # output_dict.update(
             #     self._format_data(
