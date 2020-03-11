@@ -197,7 +197,7 @@ class IMU:
 
         if len(data_array) > 1:
 
-            for index in len(data_array):
+            for index in range(len(data_array)):
                 output_dict.update(
                     {data_strings[index]: {
                     'timestamp': timestamp,
