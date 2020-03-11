@@ -114,7 +114,6 @@ int main() {
 				// cout<<"Temperature: "<<temperature<<" degrees C\n";
 				//write to file
 				dataLog << toSend.hour<<","<< toSend.min<<","<< toSend.sec<<","<<toSend.nano<<","<< motionData[0]<<","<< motionData[1]<<","<< motionData[2]<<","<< motionData[3]<<","<< motionData[4]<<","<< motionData[5]<<","<<temperature<<"\n";
-				cout << "Hello World of Data" ;
 				send(sock , &toSend , sizeof(struct message) , 0 );
 				delete motionData;
 				delete measurements;
