@@ -224,8 +224,7 @@ class TestIMUAPI(unittest.TestCase):
         module = 'general_data'
         field = 'all'
         # print(self.imu.read_telemetry_items(module=module,fields=fields))
-        for i in range(3):
-            self.imu._read_telemetry_items()
+        self.imu._read_telemetry_items()
 
 
         # fields = [field]

@@ -25,22 +25,6 @@ UDP_IP = "127.0.0.1"
 UDP_PORT = 5007
 
 TELEMETRY = {
-    # "supervisor": {
-    #     "firmware_version": {"command": "SUP:TEL? 0,data",  "length": 48, "parsing": "str"},
-    #     "commands_parsed":  {"command": "SUP:TEL? 1,data",  "length": 8, "parsing": "<Q"},
-    #     "scpi_errors":      {"command": "SUP:TEL? 2,data",  "length": 8, "parsing": "<Q"},
-    #     "cpu_selftests":    {"command": "SUP:TEL? 4,data",  "length": 22, "parsing": "<QQhhh",
-    #                          "names": ["selftest0", "selftest1", "selftest2", "selftest3", "selftest4"]},
-    #     "time":             {"command": "SUP:TEL? 5,data",  "length": 8, "parsing": "<Q"},
-    #     "context_switches": {"command": "SUP:TEL? 6,data",  "length": 8, "parsing": "<Q"},
-    #     "idling_hooks":     {"command": "SUP:TEL? 7,data",  "length": 8, "parsing": "<Q"},
-    #     "mcu_load":         {"command": "SUP:TEL? 8,data",  "length": 4, "parsing": "<f"},
-    #     "serial_num":       {"command": "SUP:TEL? 9,data",  "length": 2, "parsing": "<H"},
-    #     "i2c_address":      {"command": "SUP:TEL? 10,data",  "length": 1, "parsing": "<B"},
-    #     "tuning":           {"command": "SUP:TEL? 11,data",  "length": 1, "parsing": "<b"},
-    #     "nvm_write_cycles": {"command": "SUP:TEL? 12,data",  "length": 2, "parsing": "<H"},
-    #     "reset_cause":      {"command": "SUP:TEL? 13,data", "length": 2, "parsing": "<H"}
-    # },
     "general_data": {
         "a_x":                  {"command": "DATA:TEL? 0,data", "length": 4, "parsing": "<f"},
         "a_y":                  {"command": "DATA:TEL? 1,data", "length": 4, "parsing": "<f"},
@@ -70,18 +54,6 @@ class IMU:
         self.udp_ip = ip
         self.udp_port = port
 
-    # def write(self, command):
-    #     """
-    #     Write command used to append the proper stopbyte to all writes.
-    #     """
-    #     if type(command) is str:
-    #         command = str.encode(command)
-    #
-    #     if type(command) is bytes:
-    #         return self.i2cfile.write(
-    #             device=self.address, data=command+b'\x0A')
-    #     else:
-    #         raise TypeError('Commands must be str or bytes.')
 
     def read(self):
 
@@ -89,62 +61,8 @@ class IMU:
         # might not actually be compiling but just calling ./imu
         # return self.i2cfile.read(device=self.address, count=count)
 
-    def read_telemetry(self, module, fields=["all"]):
-        """
-        Read and parse specific fields from the MCUs that are contained in the
-        config file.
 
-        Input:
-        module = string module name. Must exactly match the module name in the
-        config file and the I2C address must be valid and non-zero. If address
-        is 0, it assumes the module is not present/not configured.
-        fields = list of strings, strings must exactly match fields in
-        the config file listed in the "telemetry" section under "supervisor" or
-        the specific module name. If field is left blank it defaults to ["all"],
-        which pulls all available telemetry for that module.
-
-        Output: A dict with keys for all fields requested with "timestamp" and
-        "data" keys for each field.
-        """
-        requests = self._build_telemetry_dict(module=module, fields=fields)
-        output = self._read_telemetry_items(dict=requests)
-        return output
-
-    def _build_telemetry_dict(self, module, fields=["all"]):
-        """
-        This method builds the dictionary of requested data.
-        """
-        if module not in TELEMETRY:
-            # Check that module is listed in config file
-            raise KeyError(
-                'Module name: '+str(module)+' not found in imu_config file.')
-        if type(fields) != list:
-            # Validate fields input type
-            raise TypeError(
-                'fields argument must be a list of fieldnames from ' +
-                'the configuration data. Input: ' + str(fields))
-
-        module_telem = TELEMETRY[module]
-        # supervisor_telem = TELEMETRY['supervisor']
-        if fields == ["all"]:
-            # Pulling all info
-            requests = module_telem
-            # requests.update(supervisor_telem)
-            return requests
-
-        # Builds requested dict
-        # Validates fields input values
-        requests = {}
-        for field in fields:
-            if field in module_telem:
-                requests[field] = module_telem[field]
-            # elif field in supervisor_telem:
-            #     requests[field] = supervisor_telem[field]
-            else:
-                raise KeyError('Invalid field: '+str(field))
-        return requests
-
-    def _read_telemetry_items(self):
+    def read_telemetry(self):
         """
         Creates the output_dict, reads the data, inputs it into parsing mehods,
         then inserts and formats it in the output_dict.
@@ -211,69 +129,8 @@ class IMU:
                 len(data_array))
 
         print(output_dict)
-
-
-            # output_dict.update(
-            #     self._format_data(
-            #         telem_field=telem_field,
-            #         input_dict=input_dict,
-            #         read_data=read_data,
-            #         parsed_data=parsed_data))
-
-
         return output_dict
 
-    # def _header_parse(self, data):
-    #     """
-    #     Parses the header data. Format is:
-    #     [data ready flag][timestamp][data]
-    #     output format is:
-    #     {'timestamp':timestamp,'data':data}
-    #     If the data ready flag is not set, it sets the timestamp to 0
-    #     """
-    #     if data[0] != 1:
-    #         # Returns 0 for timestamp if data was not ready, but still returns
-    #         # the data for debugging purposes.
-    #         # telemetry data}
-    #         return {'timestamp': 0, 'data': data[HEADER_SIZE:]}
-    #
-    #     # Unpack timestamp in seconds.
-    #     timestamp = struct.unpack('<i', data[1:HEADER_SIZE])[0]/100.0
-    #     # Return the valid packet timestamp and data
-    #     return {'timestamp': timestamp, 'data': data[HEADER_SIZE:]}
-
-    # def _unpack(self, parsing, data):
-    #     """
-    #     Basically just an abstraction of struct.unpack() to allow for types that
-    #     are not standard in the method.
-    #
-    #     Input data read over I2C from a Pumpkin module and parsing string that
-    #     indicates a special parsing method or is a valid format string for the
-    #     python struct.unpack() method.
-    #
-    #     Outputs a tuple where each field is an item parsed.
-    #     """
-    #     if type(parsing) not in [str, bytes]:
-    #         # Check that parsing is a valid type
-    #         raise TypeError(
-    #             'Parsing field must be a valid struct parsing string. Input: '
-    #             + str(type(parsing)))
-    #
-    #     if type(data) is str:
-    #         data = data.encode()
-    #
-    #     if parsing == "str":
-    #         # Search for the null terminator,
-    #         # return the leading string in a tuple
-    #         str_data = data.split(b'\0')[0]
-    #         return (str_data.decode(),)
-    #     elif parsing == "hex":
-    #         # Store as a hex string. This is so we can return binary data.
-    #         # Return as a single field in a tuple
-    #         return (binascii.hexlify(data).decode(),)
-    #
-    #     # All others parse directly with the parsing string.
-    #     return struct.unpack(parsing, data)
 
     def _format_data(self, telem_field, input_dict, read_data, parsed_data):
         """
