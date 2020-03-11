@@ -195,13 +195,22 @@ class IMU:
         data_strings  = ['a_x', 'a_y', 'a_z', 'r_x', 'r_y', 'r_z', 'temp']
         print(data_array)
 
-        if len(parsed_data) > 1:
+        if len(data_array) > 1:
 
             for index in len(data_array):
                 output_dict.update(
                     {data_strings[index]: {
                     'timestamp': timestamp,
                     'data': data_array[index]}})
+
+        else:
+
+            raise KeyError(
+                "Number of data names doesn't match total data: " +
+                len(data_array))
+
+
+
 
             # output_dict.update(
             #     self._format_data(
