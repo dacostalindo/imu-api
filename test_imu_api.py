@@ -17,7 +17,7 @@ import mock
 ############################
 # Testing configuration data
 
-UDP_IP =
+UDP_IP = "127.0.0.1"
 UDP_PORT = 5007
 
 imu_api.DELAY = 0
@@ -224,7 +224,7 @@ class TestIMUAPI(unittest.TestCase):
         module = 'general_data'
         field = 'all'
         # print(self.imu.read_telemetry_items(module=module,fields=fields))
-        self.imu.read_telemetry_items(dict=module)
+        self.imu._read_telemetry_items(dict=module)
 
 
         # fields = [field]

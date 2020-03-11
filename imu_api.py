@@ -169,7 +169,7 @@ class IMU:
 
         while True:
 
-            read_data, addr = sock.recvfrom(1024)
+            data, addr = sock.recvfrom(1024)
 
             # parsed_data = self._unpack(
             #     parsing=input_dict['parsing'],
@@ -186,11 +186,12 @@ class IMU:
             # hr min sec
             time_h = struct.unpack('H', data[28:30])
             time_m = struct.unpack('H', data[30:32])
-            time_s = truct.unpack('H', data[32:34])
+            time_s = struct.unpack('H', data[32:34])
             timestamp = time_h + time_m + time_s
 
             data_array = [ax[0], ay[0], az[0], rx[0], ry[0], rz[0], temp[0]]
             data_strings  = ["a_x", "a_y", "a_z", "r_x", "r_y", "r_z", "temp"]
+            print(data_array)
 
                 # if len(parsed_data) > 1:
                 #
