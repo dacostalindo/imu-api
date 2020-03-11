@@ -174,19 +174,19 @@ class IMU:
             # parsed_data = self._unpack(
             #     parsing=input_dict['parsing'],
             #     data=read_data['data'])
-            ax = struct.unpack('f', data[0:4]))
-            ay = struct.unpack('f', data[4:8]))
-            az = struct.unpack('f', data[8:12]))
-            rx = struct.unpack('f', data[12:16]))
-            ry = struct.unpack('f', data[16:20]))
-            rz = struct.unpack('f', data[20:24]))
+            ax = struct.unpack('f', data[0:4])
+            ay = struct.unpack('f', data[4:8])
+            az = struct.unpack('f', data[8:12])
+            rx = struct.unpack('f', data[12:16])
+            ry = struct.unpack('f', data[16:20])
+            rz = struct.unpack('f', data[20:24])
             #temperature
-            temp = struct.unpack('f', data[24:28]))
+            temp = struct.unpack('f', data[24:28])
             #Convert to short (2 bytes)
             # hr min sec
-            time_h = struct.unpack('H', data[28:30]))
-            time_m = struct.unpack('H', data[30:32]))
-            time_s = truct.unpack('H', data[32:34]))
+            time_h = struct.unpack('H', data[28:30])
+            time_m = struct.unpack('H', data[30:32])
+            time_s = truct.unpack('H', data[32:34])
             timestamp = time_h + time_m + time_s
 
             data_array = [ax[0], ay[0], az[0], rx[0], ry[0], rz[0], temp[0]]
