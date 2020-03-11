@@ -189,7 +189,7 @@ class IMU:
         time_h = struct.unpack('H', data[28:30])
         time_m = struct.unpack('H', data[30:32])
         time_s = struct.unpack('H', data[32:34])
-        timestamp = time_h + time_m/60 + time_s/3600
+        timestamp = time_h[0] + time_m[0]/60 + time_s[0]/3600
 
         data_array = [ax[0], ay[0], az[0], rx[0], ry[0], rz[0], temp[0]]
         data_strings  = ['a_x', 'a_y', 'a_z', 'r_x', 'r_y', 'r_z', 'temp']
