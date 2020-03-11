@@ -86,6 +86,7 @@ class IMU:
     def read(self):
 
         subprocess.call(["./imu","XsensIMU.cpp","XsensIMU.h","imutest.cpp","to","imu"])
+        # might not actually be compiling but just calling ./imu
         # return self.i2cfile.read(device=self.address, count=count)
 
     def read_telemetry(self, module, fields=["all"]):
@@ -170,7 +171,7 @@ class IMU:
 
         output_dict = {}
         self.read()
-        
+
         data, addr = sock.recvfrom(1024)
         # parsed_data = self._unpack(
         #     parsing=input_dict['parsing'],
@@ -191,16 +192,16 @@ class IMU:
         timestamp = time_h + time_m + time_s
 
         data_array = [ax[0], ay[0], az[0], rx[0], ry[0], rz[0], temp[0]]
-        data_strings  = ["a_x", "a_y", "a_z", "r_x", "r_y", "r_z", "temp"]
+        data_strings  = ['a_x', 'a_y', 'a_z', 'r_x', 'r_y', 'r_z', 'temp']
         print(data_array)
-                #
-                # if len(parsed_data) > 1:
-                #
-                #     for index in len(data_array):
-                #           output_dict.update(
-                #               {data_strings[index]: {
-                #                   'timestamp': timestamp,
-                #                   'data': data_array[index]}})
+
+        if len(parsed_data) > 1:
+
+            for index in len(data_array):
+                output_dict.update(
+                    {data_strings[index]: {
+                    'timestamp': timestamp,
+                    'data': data_array[index]}})
 
             # output_dict.update(
             #     self._format_data(
