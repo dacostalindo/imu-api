@@ -36,7 +36,7 @@ imu_api.HEADER_SIZE = 5
 class TestIMUAPI(unittest.TestCase):
 
     def setUp(self):
-        self.imu = imu_api.IMU(ip="127.0.0.1",port=5007)
+        self.imu = imu_api.IMU(ip=UDP_IP,port=UDP_PORT)
 
     # def test_command_type(self):
     #     with self.assertRaises(TypeError):
