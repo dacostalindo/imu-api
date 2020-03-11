@@ -161,36 +161,37 @@ class IMU:
             # read_data = self._header_parse(raw_read_data)
             # Parse the data
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        #sock2 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.bind((self.udp_ip, self.udp_port))
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            #sock2 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            sock.bind((self.udp_ip, self.udp_port))
 
-        output_dict = {}
+            output_dict = {}
 
-        while True:
+            while True:
 
-            read_data, addr = sock.recvfrom(1024)
+                read_data, addr = sock.recvfrom(1024)
 
-            # parsed_data = self._unpack(
-            #     parsing=input_dict['parsing'],
-            #     data=read_data['data'])
-            ax = struct.unpack('f', data[0:4]))
-            ay = struct.unpack('f', data[4:8]))
-            az = struct.unpack('f', data[8:12]))
-            rx = struct.unpack('f', data[12:16]))
-            ry = struct.unpack('f', data[16:20]))
-            rz = struct.unpack('f', data[20:24]))
-            #temperature
-            temp = struct.unpack('f', data[24:28]))
-            #Convert to short (2 bytes)
-            # hr min sec
-            time_h = struct.unpack('H', data[28:30]))
-            time_m = struct.unpack('H', data[30:32]))
-            time_s = truct.unpack('H', data[32:34]))
-            timestamp = time_h + time_m + time_s
+                # parsed_data = self._unpack(
+                #     parsing=input_dict['parsing'],
+                #     data=read_data['data'])
 
-            data_array = [ax[0], ay[0], az[0], rx[0], ry[0], rz[0], temp[0]]
-            data_strings  = ["a_x", "a_y", "a_z", "r_x", "r_y", "r_z", "temp"]
+                ax = struct.unpack('f', data[0:4]))
+                ay = struct.unpack('f', data[4:8]))
+                az = struct.unpack('f', data[8:12]))
+                rx = struct.unpack('f', data[12:16]))
+                ry = struct.unpack('f', data[16:20]))
+                rz = struct.unpack('f', data[20:24]))
+                #temperature
+                temp = struct.unpack('f', data[24:28]))
+                #Convert to short (2 bytes)
+                # hr min sec
+                time_h = struct.unpack('H', data[28:30]))
+                time_m = struct.unpack('H', data[30:32]))
+                time_s = truct.unpack('H', data[32:34]))
+                timestamp = time_h + time_m + time_s
+
+                data_array = [ax[0], ay[0], az[0], rx[0], ry[0], rz[0], temp[0]]
+                data_strings  = ["a_x", "a_y", "a_z", "r_x", "r_y", "r_z", "temp"]
 
                 # if len(parsed_data) > 1:
                 #
